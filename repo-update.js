@@ -9,8 +9,13 @@
  * and update permissions.
  **/
 
-var config  = require('./config');
-var Octo    = require('octokat');
+if (process.argv.length < 3) {
+  console.log('Usage: ./repo-update.js <config name>');
+  process.exit();
+}
+
+let config    = require(`./configs/${process.argv[2]}`);
+let Octo      = require('octokat');
 
 /**
  * A list of objects containing basic info about team/organizations where
