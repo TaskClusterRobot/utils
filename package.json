@@ -1,6 +1,5 @@
 {
   "dependencies":  {
-    "taskcluster-base":      "0.7.25",
     "babel":                 "^5.0.9",
     "octokat":               "0.4.11"
   }
