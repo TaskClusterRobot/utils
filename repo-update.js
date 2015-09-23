@@ -71,8 +71,9 @@ async function main(config) {
       }
 
       let numOfRepos = 0;
+      console.log('Adding repositories...');
       for (let repoBlock of repos) {
-        console.log(`Adding repositories... ${numOfRepos + 1}-${numOfRepos + repoBlock.length}`);
+        console.log(`${numOfRepos + 1}-${numOfRepos + repoBlock.length}`);
         numOfRepos = numOfRepos + repoBlock.length;
         for (let repo of repoBlock) {
           await api.teams(team.id).repos(org.name, repo.name).add();
