@@ -15,6 +15,7 @@ if (process.argv.length < 3) {
 }
 
 let config    = require(`./configs/${process.argv[2]}`);
+let Promise   = require('promise');
 let Octo      = require('octokat');
 
 /**
@@ -59,9 +60,11 @@ async function main(config) {
         throw new Error(`team ${org.team} not found: abort`);
       }
 
+      let updatedPermission = false;
       if (org.permission && (team.permission != org.permission)) {
         console.log(`Updating ${org.team} permission to: ${org.permission}...`);
         await team.update({name: team.name, permission: org.permission});
+        updatedPermission = true;
       }
 
       console.log('Enumerating repositories...');
@@ -75,9 +78,11 @@ async function main(config) {
       for (let repoBlock of repos) {
         console.log(`${numOfRepos + 1}-${numOfRepos + repoBlock.length}`);
         numOfRepos = numOfRepos + repoBlock.length;
+        let adds = [];
         for (let repo of repoBlock) {
-          await api.teams(team.id).repos(org.name, repo.name).add();
+          adds.push(api.teams(team.id).repos(org.name, repo.name).add());
         }
+        await Promise.all(adds);
       }
     }
   } catch(e) {
